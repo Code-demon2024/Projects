@@ -1,4 +1,4 @@
 age = input("What is your age? ")
-remaining_years = (int(90) - int(age)) 
+remaining_years = 90 - int(age)
 remaining_weeks = remaining_years * 52
 print(f"You have {remaining_weeks} weeks left.")
