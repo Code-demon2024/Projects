@@ -1,0 +1,4 @@
+age = input()
+remaining_years = (int(90) - int(age)) 
+remaining_weeks = remaining_years * 52
+print(f"You have {remaining_weeks} weeks left.")
