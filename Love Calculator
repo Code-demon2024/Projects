@@ -20,11 +20,10 @@ Second_digit = (int(l_L) + int(o) + int(v) + int(e))
 love_scores= int(str(First_digit) + str(Second_digit)) 
 
 if love_scores < 10 or love_scores >90: 
- print("Your score is", love_scores, "You go together like coke and mentos.")
+ print(f"Your score is {love_scores}, you go together like coke and mentos.")
 
-elif love_scores > 40 and love_scores < 50: 
-  print("Your score is", love_scores, "you are alright together.")
+elif love_scores >= 40 and love_scores <= 50: 
+  print(f"Your score is {love_scores}, you are alright together.")
 
 else:
-  print("you score is", love_scores)
-
+  print(f"you score is {love_scores}.")
