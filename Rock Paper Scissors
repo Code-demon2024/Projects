@@ -1,0 +1,68 @@
+rock = '''
+    _______
+---'   ____)
+      (_____)
+      (_____)
+      (____)
+---.__(___)
+'''
+
+paper = '''
+    _______
+---'   ____)____
+          ______)
+          _______)
+         _______)
+---.__________)
+'''
+
+scissors = '''
+    _______
+---'   ____)____
+          ______)
+       __________)
+      (____)
+---.__(___)
+'''
+
+#Write your code below this line 👇
+rps = [rock, paper, scissors]
+
+import random
+random_pick = random.choice(rps)
+The_pick = input("What do you choose? 0 for rock, 1 for paper, 2 for scissors ")
+
+if The_pick =="0":
+  print(rock)
+  print(random_pick)
+  
+  if  random_pick ==rock:
+    print("It's a tie")
+  elif random_pick ==scissors:
+    print("You win")
+  elif random_pick == paper:
+    print("You lose")
+
+
+
+if The_pick =="1":
+  print(paper)
+  print(random_pick)
+
+  if  random_pick ==paper:
+    print("It's a tie")
+  elif random_pick ==rock:
+    print("You win")
+  elif random_pick == scissors:
+    print("You lose")
+
+if The_pick =="2":
+  print(scissors)
+  print(random_pick)
+
+  if  random_pick ==scissors:
+    print("It's a tie")
+  elif random_pick ==paper:
+    print("You win")
+  elif random_pick == rock:
+    print("You lose")
