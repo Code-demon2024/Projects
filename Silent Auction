@@ -1,0 +1,23 @@
+Bidders = {}
+
+def highest_bidder(Bidders):
+  highest_bid = 0
+  winner = ""
+  for bid in Bidders:
+    bid_amount = Bidders[bid]
+    if bid_amount > highest_bid:
+      highest_bid = bid_amount
+      winner = bid
+  print(f"winner is {winner} with bid of {highest_bid}")
+    
+
+
+b = "yes"
+while b == "yes": 
+  name = input("What is your name?: ")
+  bid = int(input("How much is your bid? "))
+  Bidders[name] = bid
+  b = input("Would you like to add another bidder? ").lower()
+  clear()
+  if b == "no": 
+   highest_bidder(Bidders)
