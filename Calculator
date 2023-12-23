@@ -1,0 +1,33 @@
+def add(n1,n2):
+    return n1+n2
+
+def subtract(n1,n2):
+  return n1-n2
+
+def multiply(n1,n2):
+  return n1*n2
+
+def divide(n1,n2):
+  return n1/n2
+
+operation = {"+" : add, "-": subtract, "*": multiply, "/": divide}
+def calculator():
+  first_number = float(input("Put the first number " ))
+  for key in operation: 
+    print(key)
+  using_again = True
+  while using_again:
+    operation_sybmol = input("Put the operation: " )
+    next_number = float(input("Put the next number " ))
+    result_one = operation[operation_sybmol](first_number,next_number)
+    answer = result_one
+  
+    print (f"{first_number} {operation_sybmol} {next_number} = {result_one}")
+    if input(f"Type 'y' to continue calculating with {answer}, or type 'n' to start a new calculation: ") == "y":
+      first_number = answer
+  
+    else: 
+      using_again = False
+      print ("done")
+      calculator()
+calculator()
