@@ -1,0 +1,44 @@
+
+import random
+
+
+
+def guessing():
+  choice = random.randint(1,100)
+  print(f"choice is {choice}")
+  game_on = True
+  while game_on:
+      def guess(difficulty):
+        if difficulty == "Easy":
+          attempts = 10
+        elif difficulty == "Hard": 
+          attempts = 5
+        guess_no = 0 
+        while guess_no != choice and attempts > 0:  
+          guess_no = int(input("Guess a number between 1 and 100: "))
+          if guess_no > choice:
+            print(f"Too high current trials left {attempts - 1}")
+            attempts = attempts -1
+          elif guess_no < choice:
+            print(f"Too low current trials left {attempts - 1}")
+            attempts = attempts - 1
+          elif guess_no == choice:
+            game_on=False
+            print("You got it!")
+            print(f"The answer was {choice}")
+            print(guessing())
+        else:
+          game_on=False
+          print("You ran out")
+          print(guessing())
+  
+      difficulty = input("Choose a difficulty: Easy or Hard? ")
+      print(guess(difficulty))
+
+
+print(guessing())
+
+      
+  
+  
+
