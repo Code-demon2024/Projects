@@ -1,0 +1,135 @@
+# main
+
+from turtle import Turtle,Screen
+import time
+from paddle import Paddle
+from ball import Ball
+from score import  Scoreboard
+
+screen = Screen()
+screen.setup(800 , 600)
+screen.bgcolor("black")
+screen.title("Pong Game")
+screen.tracer(0)
+screen.listen()
+
+
+paddle_r = Paddle((350, 0))
+paddle_l = Paddle((-350, 0))
+ball_move = Ball()
+score = Scoreboard()
+game_is_on = True
+while game_is_on:
+    time.sleep(ball_move.speed_the_ball)
+    screen.update()
+    ball_move.moving()
+
+    if ball_move.ycor() < -280 or ball_move.ycor() > 280:
+        ball_move.bounce_y()
+    if ball_move.distance(paddle_r) < 50 and ball_move.xcor() > 320 or ball_move.distance(paddle_l) < 40 and ball_move.xcor() > -340:
+         ball_move.bounce_x()
+
+
+    if  ball_move.xcor() > 340:
+         ball_move.reset_position()
+         score.l_points()
+
+    if ball_move.xcor() < -340 :
+        ball_move.reset_position()
+        score.r_points()
+
+    screen.onkey(paddle_r.up, key="Up")
+    screen.onkey(paddle_r.down, key="Down")
+    screen.onkey(paddle_l.up, key="w")
+    screen.onkey(paddle_l.down, key="s")
+
+screen.exitonclick()
+
+
+#score
+
+from turtle import Turtle
+
+
+class Scoreboard(Turtle):
+    def __init__(self):
+        super().__init__()
+        self.color("white")
+        self.penup()
+        self.hideturtle()
+        self.l_score = 0
+        self.r_score = 0
+        self.update()
+
+    def update(self):
+        self.clear()
+        self.goto(x=-100, y=250)
+        self.write(self.l_score, align='center', font=('Arial', 24, 'normal'))
+        self.goto(x=100, y=250)
+        self.write(self.r_score, align='center', font=('Arial', 24, 'normal'))
+
+
+    def l_points(self):
+        self.l_score += 1
+        self.update()
+
+    def r_points(self):
+        self.r_score += 1
+        self.update()
+
+#creating paddles
+from turtle import Turtle, Screen
+
+
+class Paddle(Turtle):
+    def __init__(self, position):
+        super().__init__()
+        self.shape("square")
+        self.color("white")
+        self.penup()
+        self.goto(position)
+        self.speed("fastest")
+        self.shapesize(stretch_wid=4, stretch_len=1)
+
+    def up(self):
+        self.goto(self.xcor(), self.ycor() + 20)
+
+    def down(self):
+        self.goto(self.xcor(), self.ycor() - 20)
+
+# ball
+
+from turtle import Turtle
+import random
+
+
+class Ball(Turtle):
+    def __init__(self):
+        super().__init__()
+        self.shape("circle")
+        self.color("white")
+        self.penup()
+        self.shapesize(stretch_wid=1, stretch_len=1)
+        self.x_move = 10
+        self.y_move = 10
+        self.speed_the_ball = 0.1
+
+
+    def moving(self):
+        new_x = self.xcor() + self.x_move
+        new_y = self.ycor() + self.y_move
+        self.goto(x=new_x, y=new_y)
+
+
+    def bounce_y(self):
+        self.y_move *= -1
+
+    def bounce_x(self):
+        self.x_move *= -1
+        self.speed_the_ball *= 0.9
+
+    def reset_position(self):
+        self.goto(0,0)
+        self.speed_the_ball = 0.1
+        self.bounce_x()
+
