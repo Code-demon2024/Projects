@@ -1,5 +1,4 @@
-# main 
-
+#main
 from turtle import Turtle,Screen
 import time
 from snake import Snake
@@ -31,44 +30,21 @@ while game_is_on:
         snake.extend()
         score.add_points()
     if snake.head.xcor() > 280 or snake.head.ycor() > 280 or snake.head.xcor() < -280 or snake.head.ycor() < -280:
-        game_is_on = False
-        score.game_over()
-        print("Game over")
+        score.reset()
+        snake.reset_snake()
+
+
 
     for segment in snake.segments[1:]:
         if  snake.head.distance(segment) < 10:
-            game_is_on = False
-            score.game_over()
+            score.reset()
+            snake.reset_snake()
+
 
 screen.exitonclick()
-#scoreboard
 
-from turtle import Turtle
-
-
-class Scoreboard(Turtle):
-    def game_over(self):
-        self.goto(0,0)
-        self.write(f"Game Over",move=False, align='center', font=('Arial', 18, 'normal'))
-    def __init__(self):
-        super().__init__()
-        self.score = 0
-        self.color("white")
-        self.penup()
-        self.goto(x=0, y=270)
-        self.write(f"Score:{self.score}",move=False, align='center', font=('Arial', 12, 'normal'))
-        self.hideturtle()
-
-
-
-
-    def add_points(self):
-        self.score += 1
-        self.clear()
-        self.write(f"Score:{self.score}",move=False, align='center', font=('Arial', 12, 'normal'))
 
 #snake
-
 import turtle
 from turtle import Turtle
 UP = 90
@@ -88,6 +64,13 @@ class Snake():
     def create_snake(self):
         for position in STARTING_POSITIONS:
             self.add_segments(position)
+
+    def reset_snake(self):
+        for seg in self.segments:
+            seg.goto(1000,1000)
+        self.segments.clear()
+        self.create_snake()
+        self.head = self.segments[0]
 
     def add_segments(self, position):
         snake = Turtle("square")
@@ -109,6 +92,7 @@ class Snake():
 
 
 
+
     def up(self):
         if self.head.heading() != DOWN:
             self.head.setheading(UP)
@@ -124,8 +108,43 @@ class Snake():
 
 
 
-#food
+#score
 
+from turtle import Turtle
+
+
+class Scoreboard(Turtle):
+
+    def __init__(self):
+        super().__init__()
+        self.score = 0
+        self.high_score = 0
+        self.color("white")
+        self.penup()
+        self.goto(x=0, y=270)
+        self.write(f"Score:{self.score}",move=False, align='center', font=('Arial', 12, 'normal'))
+        self.hideturtle()
+
+    def update_score(self):
+        self.clear()
+        self.goto(x=0, y=270)
+        self.write(f"Score:{self.score} Highest score:{self.high_score}",move=False, align='center', font=('Arial', 12, 'normal'))
+
+
+
+    def add_points(self):
+        self.score += 1
+        self.clear()
+        self.write(f"Score:{self.score}",move=False, align='center', font=('Arial', 12, 'normal'))
+
+    def reset(self):
+        if self.score > self.high_score:
+            self.high_score = self.score
+        self.score = 0
+        self.update_score()
+
+
+#food
 from turtle import  Turtle
 import random
 
@@ -138,6 +157,8 @@ class Food(Turtle):
         self.color("blue")
         self.speed("fastest")
         self.refresh()
+
+
 
     def refresh(self):
         self.goto(x=random.randint(-280, 280), y=random.randint(-280, 280))
