@@ -1,0 +1,173 @@
+
+from tkinter import *
+import pandas
+import random
+
+current_card = {}
+def flip_card():
+    global current_card
+    logo_img_back = PhotoImage(file="images/card_back.png")
+    canvas.itemconfig(canvas_image_front, image=logo_img_back)
+    canvas.itemconfig(title, text="English", fill="White")
+    canvas.itemconfig(word, text=current_card["English"], fill="White")
+
+
+def is_known():
+    dict_conv.remove(current_card)
+    data = pandas.DataFrame(dict_conv)
+    data.to_csv("data/new_file.csv", index=False)
+    next_button()
+
+
+window = Tk()
+window.title("FlashCard")
+window.config(padx=50, pady=50, bg="#B1DDC6")
+
+
+def next_button():
+    global current_card, flip_timer, dict_conv
+    window.after_cancel(flip_timer)
+    current_card = random.choice(dict_conv)
+    canvas.itemconfig(title, text="French", fill="black")
+    canvas.itemconfig(word, text=current_card["French"], fill="black")
+    canvas.itemconfig(canvas_image_front, image=logo_img_front)
+    flip_timer= window.after(3000, func=flip_card)
+
+
+canvas = Canvas(width=800, height=526)
+logo_img_front = PhotoImage(file="images/card_front.png")
+canvas_image_front = canvas.create_image(400, 263, image=logo_img_front)
+logo_img_back = PhotoImage(file="images/card_back.png")
+canvas.configure(background="#B1DDC6", highlightthickness=0)
+title = canvas.create_text(400, 150 ,text="", font=("Ariel", 40, "italic"))
+word = canvas.create_text(400, 263 ,text="", font=("Ariel", 40, "bold"))
+canvas.grid(column=0, row=0, columnspan=2)
+
+flip_timer =     window.after(3000, func=flip_card)
+
+
+right_button = PhotoImage(file="images/right.png")
+right = Button(image=right_button, highlightthickness=0, command=is_known)
+right.grid(column=0, row=1)
+
+
+wrong_button = PhotoImage(file="images/wrong.png")
+wrong = Button(image=wrong_button, highlightthickness=0, command=next_button)
+wrong.grid(column=1, row=1)
+
+try:
+    data = pandas.read_csv("data/new_file.csv")
+
+except FileNotFoundError:
+    data = pandas.read_csv("data/french_words.csv")
+
+dict_conv = data.to_dict(orient='records')
+
+next_button()
+
+window.mainloop()
+
+
+#### French word csv:
+French,English
+partie,part
+histoire,history
+chercher,search
+seulement,only
+police,police
+pensais,thought
+aide,help
+demande,request
+genre,kind
+mois,month
+frère,brother
+laisser,let
+car,because
+mettre,to put
+aucun,no
+laisse,leash
+eux,them
+ville,city
+chaque,each
+parlé,speak
+arrivé,come
+devrait,should
+bébé,baby
+longtemps,long time
+heures,hours
+vont,will
+pendant,while
+revoir,meet again
+aucune,any
+place,square
+parle,speak
+compris,understood
+savais,knew
+étaient,were
+attention,Warning
+voici,here is
+pourrais,could
+affaire,case
+donner,give
+type,type
+leurs,their
+donné,given
+train,train
+corps,body
+endroit,place
+yeux,eyes
+façon,way
+écoute,listen
+dont,whose
+trouve,find
+premier,first
+perdu,lost
+main,hand
+première,first
+côté,side
+pouvoir,power
+vieux,old
+sois,be
+tiens,here
+matin,morning
+tellement,so much
+enfant,child
+point,point
+venu,came
+suite,after
+pardon,sorry
+venez,come
+devant,in front of
+vers,towards
+minutes,minutes
+demandé,request
+chambre,bedroom
+mis,placed
+belle,beautiful
+droit,law
+aimerais,would like to
+aujourd'hui,today
+mari,husband
+cause,cause
+enfin,finally
+espère,hope
+eau,water
+attendez,Wait
+parti,left
+nouvelle,new
+boulot,job
+arrêter,Stop
+dirait,would say
+terre,Earth
+compte,account
+donne,given
+loin,far
+fin,end
+croire,believe
+chérie,sweetheart
+gros,large
+plutôt,rather
+aura,will have
+filles,girls
+jouer,to play
+bureau,office
