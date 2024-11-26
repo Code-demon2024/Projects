@@ -1,0 +1,72 @@
+import smtplib
+import random
+import datetime as dt
+import pandas
+
+my_email = "mina.fathy87@gmail.com"
+def send_email():
+    receiver_email = email
+    with smtplib.SMTP("smtp.gmail.com") as connection:
+        connection.starttls()
+        connection.login(user=my_email, password="xxxxx")
+        connection.sendmail(
+            from_addr=my_email,
+            to_addrs=receiver_email,
+            msg=f"Subject:Happy Birthday! \n\n {content}")
+        connection.close()
+
+current_time = dt.datetime.now()
+current_day = current_time.day
+current_month = current_time.month
+
+with open('birthdays.csv', 'r') as file:
+    file_in_csv = pandas.read_csv('birthdays.csv')
+    print(file_in_csv)
+for index, row in file_in_csv.iterrows():
+    name = row['name']
+    email = row['email']
+    month = row['month']
+    day = row['day']
+
+    if current_day == day and current_month == month:
+        file_path = f"letter_templates/letter_{random.randint(1, 3)}.txt"
+        with open(file_path) as new_template:
+            content = new_template.read()
+            content = content.replace("[NAME]", name)
+            send_email()
+    else:
+        pass
+
+csv file: 
+name,email,year,month,day
+Test,zaza2008@msn.com,1961,11,28
+Mina,zaza2008@msn.com,1961,11,26
+
+templates: 
+#1 
+Dear [NAME],
+
+Happy birthday!
+
+All the best for the year!
+
+Mina 
+
+#2
+Hey [NAME],
+
+Happy birthday! Have a wonderful time today and eat lots of cake!
+
+Lots of love,
+
+Angela
+
+#3
+Dear [NAME],
+
+It's your birthday! Have a great day!
+
+All my love,
+
+Angela
+#2 
