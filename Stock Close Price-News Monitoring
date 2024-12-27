@@ -46,7 +46,7 @@ day_before_yesterday_closing_price = float(day_before_yesterday_closing['4. clos
 change_percent = float((yesterday_close_price - day_before_yesterday_closing_price) / day_before_yesterday_closing_price) * 100
 
 
-if change_percent > 0.03 or change_percent < -0.01:
+if change_percent > 0.03 or change_percent < -0.03:
 
     client = twilio.rest.Client(twilio_sid, auth_token)
     message = client.messages.create(
