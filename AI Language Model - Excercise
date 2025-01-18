@@ -1,0 +1,58 @@
+from datetime import datetime
+import requests
+import json
+APP_ID = "XXXX"
+API_KEY = "XXXX"
+
+
+header = {
+     'Content-Type': 'application/json',
+     'x-app-id': APP_ID,
+     'x-app-key': API_KEY}
+
+param = {
+    "query": input(f"What was your excersice for today?: ")
+}
+var_request = requests.post(url= "https://trackapi.nutritionix.com/v2/natural/exercise", headers=header, json=param )
+
+excersice_data = var_request.json()
+
+new_data = excersice_data['exercises']
+
+calories = ''
+name = ''
+duration = ''
+
+for excersice in new_data:
+    calories = excersice['nf_calories']
+    name = excersice['name']
+    duration = excersice['duration_min']
+print(calories)
+print(name)
+print(duration)
+
+
+google_doc_url = "https://api.sheety.co/0d7c97e808b076ce61a0461724656efd/workouts/workouts"
+
+x = datetime.now()
+time = x.strftime("%X")
+
+x_date = datetime.now().strftime("%d/%m/%Y")
+
+user_params = {
+    "workout": {
+     "date": f"{x_date}",
+     "time": f"{time}",
+     "exercise": f"{name}".title(),
+     "duration": f"{duration}",
+      "calories": f"{calories}"
+}}
+
+token = "XXXXX"
+header = {
+    "Authorization" : f"Bearer {token}"
+}
+
+response = requests.post(url=google_doc_url, json = user_params, headers=header)
+
+print(response.json())
