@@ -1,0 +1,83 @@
+## Amadeus - get token code
+
+import requests
+
+
+API = "XXXX"
+API_SECRET = "XXX"
+TOKEN = "XXXX"
+
+header = {
+    'Content-Type': 'application/x-www-form-urlencoded'
+}
+body = {
+    'grant_type': 'client_credentials',
+    'client_id': API,
+    'client_secret': API_SECRET
+}
+response = requests.post(url="https://test.api.amadeus.com/v1/security/oauth2/token", headers=header, data=body)
+
+# New bearer token. Typically expires in 1799 seconds (30min)
+print(f"Your token is {response.json()['access_token']}")
+print(f"Your token expires in {response.json()['expires_in']} seconds")
+
+
+### Complete code for cheap flight finder
+
+from pprint import pprint
+import requests
+
+
+amadeus_token = "XXXX"
+
+outboundcity = "AUS"
+inboundcity = "LAX"
+
+headers = {"Authorization": f"Bearer {amadeus_token}"}
+query = {
+    "originLocationCode": outboundcity,
+    "destinationLocationCode": inboundcity,
+    "departureDate": "2025-02-13",
+    "returnDate": "2025-02-16",
+    "adults": 1,
+    "currencyCode": "USD",
+    "max": 10,
+    "maxPrice": 1300
+}
+response = requests.get(
+    url="https://test.api.amadeus.com/v2/shopping/flight-offers", headers= headers, params=query
+    )
+pprint(response.json())
+data = response.json()
+
+# Posting the findings in my Google sheet
+google_doc_url = "https://api.sheety.co/0d7c97e808b076ce61a0461724656efd/prices/prices"
+sheety_token = "XXXX"
+header = {
+    "Authorization": f"Bearer {sheety_token}"
+}
+
+for offer in data["data"]:
+        offer_id = offer["id"]
+        outbound_date = offer["itineraries"][0]["segments"][0]["departure"]["at"]
+        inbound_date = offer["itineraries"][-1]["segments"][-1]["arrival"]["at"]
+        price = offer["price"]["total"]
+        airline_code = offer["validatingAirlineCodes"][0]
+        airline = data["dictionaries"]["carriers"][airline_code]
+
+    # Prepare payload
+        user_params = {
+            "price": {
+                "offer": offer_id,
+                "outbound": outbound_date,
+                "outboundcity": outboundcity ,
+                "inbound" :  inbound_date,
+                "inboundcity": inboundcity,
+                "price": price,
+                "airline": airline
+        }
+    }
+
+    # Make POST request
+        response = requests.post(url=google_doc_url, json=user_params, headers=header)
+        print(response.status_code, response.json())
